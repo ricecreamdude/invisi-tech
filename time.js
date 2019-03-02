@@ -1,7 +1,6 @@
+'use strict' 
 
-//Here's the task: Given an array of inputs (location name, postal code), return the current time and weather for those locations.*
-
-module.exports = {}
+module.exports = exports = {}
 
 exports.getCurrentDate = function(){
  
@@ -12,10 +11,12 @@ exports.getCurrentDate = function(){
     + '/' + today.getFullYear()
 }
 
-//"2011-04-20T00:30:51.01"
-exports.getCurrentTime = function(){
+//'2011-04-20T00:30:51.01'
+exports.getCurrentTime = function(str){
 
-  const t = new Date
+  const t = new Date(str) 
+
+  let time = '';
   
   return time = parseHour(t.getHours()) 
     + ':' + parseMinute(t.getMinutes()) 
@@ -29,9 +30,7 @@ const parseHour = hour => {
 }
 
 const parseMinute = minute => {
-  
   if (minute.toString().length === 1) {
-
     return '0' + minute
   }
   return minute
@@ -41,7 +40,4 @@ const parseMeridiem = hour => {
   if (hour >= 12) return 'PM'
   return 'AM'
 }
-
-console.log( exports.getCurrentDate() )
-console.log( exports.getCurrentTime() )
  
