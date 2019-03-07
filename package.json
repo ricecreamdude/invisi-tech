@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ricecreamdude/invisi-tech/issues"
   },
-  "homepage": "https://github.com/ricecreamdude/invisi-tech#readme"
+  "homepage": "https://github.com/ricecreamdude/invisi-tech#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
 }
