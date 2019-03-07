@@ -1,4 +1,5 @@
 module.exports = exports = {}
+
 let request = require('request')
 const appId = "41960784bc2b60bb91f8abaf6e3b1715" 
 const baseURI = "https://api.openweathermap.org/data/2.5/weather?appid="+ appId + "&"
@@ -19,13 +20,11 @@ exports.getWeatherByCity = function(city) {
       console.log('Weather getCityByName error: ', err)
       throw err
     }
-    console.log('WEATHER HTTP RESPONSE',res)
-    return parseWeather(json)
+    // console.log( parseWeather(json) )
+    console.log(json)
   })
 }
 
-
-//Zip Code Query
 //api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}
 exports.getWeatherByZip = function(zip){
   const uri = baseURI + "zip=" + zip + ",us"
@@ -33,16 +32,16 @@ exports.getWeatherByZip = function(zip){
     url: uri,
     json: true,
   }, (err, res, json) => { 
-    // if (json.cod == '404'){
-    //   console.log('We can\'t find the zip code "'+ zip + '". Please check your code and try again.')
-    //   throw err
-    // }
+    if (json.cod == '404'){
+      console.log('We can\'t find the zip code "'+ zip + '". Please check that your code is located within the US, or check your code and try again.')
+      throw err
+    }
     if (err){
       console.log('Weather getCityByZip error: ', err)
       throw err
     }
-    console.log('WEATHER HTTP RESPONSE', res)
-    return parseWeather(json)
+    // console.log( parseWeather(json) )
+    console.log(json)
   })
 }
 
