@@ -1,28 +1,15 @@
 module.exports = exports = {}
 
-exports.getCurrentDate = function(){
- 
-  let today = new Date;
+exports.getTime = function(offset){
 
-  console.log( 
-    today =  (today.getMonth()+1) 
-    + '/' + today.getDate()
-    + '/' + today.getFullYear() 
-  )
-}
+  let d = new Date(
+    new Date().getTime() + offset * 1000
+  );
+  let time = parseHour(d.getUTCHours()) 
+    + ':' + parseMinute(d.getUTCMinutes()) 
+    + ' ' + parseMeridiem(d.getUTCHours())
 
-//'2011-04-20T00:30:51.01'
-exports.getCurrentTime = function(str){
-
-  const t = new Date(str) 
-
-  let time = '';
-  
-  console.log( 
-    time = parseHour(t.getHours()) 
-    + ':' + parseMinute(t.getMinutes()) 
-    + ' ' + parseMeridiem(t.getHours())
-  ) 
+  return time
   }
 
 const parseHour = hour => {

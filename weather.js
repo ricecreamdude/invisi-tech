@@ -1,47 +1,63 @@
+let request = require('request')
+const rp = require('request-promise')
+
 module.exports = exports = {}
 
-let request = require('request')
 const appId = "41960784bc2b60bb91f8abaf6e3b1715" 
-const baseURI = "https://api.openweathermap.org/data/2.5/weather?appid="+ appId + "&"
+const baseURI = "https://api.openweathermap.org/data/2.5/weather"
 
-//City Name Query
-//api.openweathermap.org/data/2.5/weather?q={city name}
 exports.getWeatherByCity = function(city) {
-  const uri = baseURI +"q=" + city
-  request({
-    url: uri,
-    json: true,
-  }, (err, res, json) => { 
-    if (json.cod == '404'){
-      console.log('We can\'t find the city "'+ city + '". Please check your spelling and try again.')
+  const options = {
+    uri: baseURI,
+    qs: {
+      appid: appId,
+      q: city
+    },
+    headers: {
+      'User-Agent': 'Request-Promise'
+    },
+    json: true
+  }
+
+  return rp(options)
+    .then( (json) => {
+      if (json.cod == '404'){
+        console.log('We can\'t find the zip code "'+ zip + '". Please check that your code is located within the US, or check your code and try again.')
+        throw err
+      }
+
+      return parseWeather(json)
+    })
+    .catch( (err) => {
       throw err
-    }
-    if (err){
-      console.log('Weather getCityByName error: ', err)
-      throw err
-    }
-    // console.log( parseWeather(json) )
-    console.log(json)
-  })
+    })
+
 }
 
-//api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}
 exports.getWeatherByZip = function(zip){
-  const uri = baseURI + "zip=" + zip + ",us"
-  request({
-    url: uri,
-    json: true,
-  }, (err, res, json) => { 
+  
+  const options = {
+    uri: baseURI,
+    qs: {
+      appid: appId,
+      zip: zip + ',us'
+    },
+    headers: {
+      'User-Agent': 'Request-Promise'
+    },
+    json: true
+  }
+
+  return rp(options)
+  .then( (json) => {
     if (json.cod == '404'){
       console.log('We can\'t find the zip code "'+ zip + '". Please check that your code is located within the US, or check your code and try again.')
       throw err
     }
-    if (err){
-      console.log('Weather getCityByZip error: ', err)
-      throw err
-    }
-    // console.log( parseWeather(json) )
-    console.log(json)
+    return parseWeather(json)
+  })
+  .catch( (err) => {
+    throw err
   })
 }
 
@@ -50,7 +66,9 @@ parseWeather = function(data){
   let cityWeather = {
     temp:  parseCelsius(data.main.temp),
     humidity: data.main.humidity,
-    windSpeed: data.wind.speed
+    windSpeed: data.wind.speed,
+    lat: data.coord.lat,
+    lon: data.coord.lon
   }
 
   return cityWeather
